@@ -5,8 +5,7 @@ The map reads its data from a Google Sheet you control. This step takes about
 
 ## 1.1 Copy the template
 
-Open the **[park-treemap Trees template](#)** *(replace this link with the
-URL of the template sheet once you've published it)* and click:
+Open the **[park-treemap Trees template]([#](https://docs.google.com/spreadsheets/d/1PVzp_l5RKAYZDWJrBaZ0418P7LMPQKsEIBxTov6Znd0/edit?usp=sharing))** and click:
 
 ```
 File → Make a copy
@@ -46,7 +45,7 @@ Look at the spreadsheet's URL in your browser:
 
 ```
 https://docs.google.com/spreadsheets/d/16056CHjRL4-hbd4hbIb1czvrryGKcwMFYWCDeMDDAHM/edit
-                                       ^─────────────── this part ──────────────^
+                                       ^─────────────── this part ────────────────^
 ```
 
 The long string between `/d/` and `/edit` is your **Sheet ID**. Copy it —

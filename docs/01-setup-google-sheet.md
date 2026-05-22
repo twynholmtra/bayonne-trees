@@ -20,6 +20,7 @@ The template comes with:
   tree from its latitude and longitude.
 - A **formula in the `Google Maps link` column** that builds a clickable map
   link from latitude and longitude.
+- A **`Feedback`** worksheet where comments submitted by users will appear.
 
 > ⚠️ **Don't delete or overwrite the formulas in `Ref` or `Google Maps link`.**
 > If you accidentally do, copy the formula from row 2 of the original

@@ -8,9 +8,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 // — Your park —
-const PARK_NAME        = 'Park Tree Map';
-const PARK_SHORT_NAME  = 'Park Trees';
-const PARK_DESCRIPTION = 'A map of the trees in our park.';
+// PARK_NAME is just the park's name (e.g. 'Lillie Park'). The app appends
+// " tree map" where it needs the full title.
+const PARK_NAME        = 'My Park';
+const PARK_DESCRIPTION = 'A short sentence about your park and your group — shown in the Info panel.';
 const CONTACT_EMAIL    = 'friends@example.org';
 
 // — Your Google Sheet —

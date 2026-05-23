@@ -15,9 +15,8 @@ You'll see a short file that looks like this:
 
 ```js
 // — Your park —
-const PARK_NAME        = 'Park Tree Map';
-const PARK_SHORT_NAME  = 'Park Trees';
-const PARK_DESCRIPTION = 'A map of the trees in our park.';
+const PARK_NAME        = 'My Park';
+const PARK_DESCRIPTION = 'A short sentence about your park and your group.';
 const CONTACT_EMAIL    = 'friends@example.org';
 
 // — Your Google Sheet —
@@ -44,9 +43,8 @@ value is text.
 
 | Field                | What to put                                                 |
 |----------------------|-------------------------------------------------------------|
-| `PARK_NAME`          | The full name of your park, e.g. `'Lillie Park'`.           |
-| `PARK_SHORT_NAME`    | A short version, used on the install banner.                |
-| `PARK_DESCRIPTION`   | One sentence — shown to people installing the app.          |
+| `PARK_NAME`          | Just the park's name, e.g. `'Lillie Park'`. The app adds *"tree map"* itself where it needs the full title. |
+| `PARK_DESCRIPTION`   | One sentence about your park and group — shown in the Info panel that anyone can open from the top of the map. |
 | `CONTACT_EMAIL`      | Where feedback emails should go.                            |
 | `SHEET_ID`           | The long ID from step 1.3.                                  |
 | `SHEET_NAME`         | Leave as `'Trees'` unless you renamed the worksheet.        |

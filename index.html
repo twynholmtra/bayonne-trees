@@ -135,6 +135,10 @@
     #btn-add-tree-init { background: #e8f4ec; border-color: #5a9e7a; color: #3a6e52; }
     #btn-add-tree-init:hover { background: #d4ecdf; }
 
+    /* Trusted-contributor gating: hide write controls when gated and not enrolled. */
+    body.gated:not(.contributor) #btn-add-tree-init { display: none; }
+    body.gated:not(.contributor) .welcome-cta       { display: none; }
+
     /* Add tree modal */
     #add-tree-backdrop {
       display: none;
@@ -767,8 +771,8 @@
 
   <div id="welcome-overlay">
     <h2 id="welcome-title">Welcome!</h2>
-    <p>This map is empty. Add your first tree to get started — the map will centre and zoom to your park automatically.</p>
-    <button onclick="welcomeAddFirstTree()">+ Add your first tree</button>
+    <p id="welcome-message">This map is empty. Add your first tree to get started — the map will centre and zoom to your park automatically.</p>
+    <button class="welcome-cta" onclick="welcomeAddFirstTree()">+ Add your first tree</button>
   </div>
 
   <div id="picker-backdrop" onclick="closePicker()"></div>
@@ -988,6 +992,36 @@
   const GITHUB_PHOTOS_BASE_URL =
     `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/photos/`;
 
+  // ── Trusted-contributor token (see docs/12-trusted-contributors.md) ─────────
+  const CONTRIB_KEY = 'parktreemap_contributor_token';
+
+  function readContributorToken() {
+    try { return localStorage.getItem(CONTRIB_KEY) || ''; } catch (e) { return ''; }
+  }
+
+  function isEnrolledContributor() {
+    return !!readContributorToken();
+  }
+
+  // Returns true when the visitor is allowed to use contributor features.
+  // If gating is disabled, everyone is allowed (open mode).
+  function canContribute() {
+    return !ENABLE_CONTRIBUTOR_GATE || isEnrolledContributor();
+  }
+
+  // If the URL contains ?enrol=<token>, store the token and strip it from
+  // the address bar so it doesn't end up in bookmarks / browser history.
+  (function enrolFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const tok = params.get('enrol');
+    if (!tok) return;
+    try { localStorage.setItem(CONTRIB_KEY, tok); } catch (e) {}
+    params.delete('enrol');
+    const clean = params.toString();
+    const newUrl = window.location.pathname + (clean ? '?' + clean : '') + window.location.hash;
+    history.replaceState({}, '', newUrl);
+  })();
+
   // Apply configured strings to the DOM.
   document.title = PARK_NAME;
   document.addEventListener('DOMContentLoaded', () => {
@@ -995,7 +1029,14 @@
     if (banner) banner.textContent = `Add ${PARK_NAME} to your phone for the best experience.`;
     const sheetLink = document.getElementById('add-tree-sheet-link');
     if (sheetLink) sheetLink.href = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+    applyContributorGate();
   });
+
+  // Reflect contributor state into the DOM so CSS can hide gated controls.
+  function applyContributorGate() {
+    document.body.classList.toggle('gated', !!ENABLE_CONTRIBUTOR_GATE);
+    document.body.classList.toggle('contributor', canContribute());
+  }
 
   // ── CSV PARSER ───────────────────────────────────────────────────────────────
   // Handles quoted fields (RFC 4180), CRLF and LF line endings.
@@ -1574,6 +1615,12 @@
     const el = document.getElementById('welcome-overlay');
     if (!el) return;
     document.getElementById('welcome-title').textContent = `Welcome to ${PARK_NAME}!`;
+    const msg = document.getElementById('welcome-message');
+    if (msg) {
+      msg.textContent = canContribute()
+        ? 'This map is empty. Add your first tree to get started \u2014 the map will centre and zoom to your park automatically.'
+        : `This map is being set up. Once trees have been added, they'll appear here. Check back soon!`;
+    }
     el.classList.add('visible');
   }
 
@@ -2261,6 +2308,7 @@
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: 'uploadPhoto',
+        token: readContributorToken(),
         filename,
         base64,
         contentType: 'image/jpeg'
@@ -2299,6 +2347,7 @@
 
     const payload = {
       action:           'addTree',
+      token:            readContributorToken(),
       lat,
       lng,
       sci:              form.elements['sci'].value.trim(),

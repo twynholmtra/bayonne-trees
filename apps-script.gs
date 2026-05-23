@@ -40,13 +40,28 @@ function jsonResponse(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+// Trusted-contributor check. Returns a response to return early, or null
+// when the request is allowed to proceed.
+//   • If the CONTRIBUTOR_TOKEN Script Property is unset → all submissions
+//     are accepted (back-compat / open mode).
+//   • If it is set → the request's `token` field must match exactly.
+function requireContributorToken(data) {
+  const expected = PropertiesService.getScriptProperties()
+    .getProperty('CONTRIBUTOR_TOKEN');
+  if (!expected) return null;
+  if (!data.token || data.token !== expected) {
+    return jsonResponse({ status: 'error', message: 'Not authorised' });
+  }
+  return null;
+}
+
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
     switch (data.action) {
       case 'feedback':    return handleFeedback(data);
-      case 'addTree':     return handleAddTree(data);
-      case 'uploadPhoto': return handleUploadPhoto(data);
+      case 'addTree':     return requireContributorToken(data) || handleAddTree(data);
+      case 'uploadPhoto': return requireContributorToken(data) || handleUploadPhoto(data);
       default:            return jsonResponse({ status: 'error', message: 'Unknown action: ' + data.action });
     }
   } catch (err) {

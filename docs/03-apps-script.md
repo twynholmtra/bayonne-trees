@@ -56,6 +56,12 @@ view the project.
 
 4. **Save script properties**.
 
+> 💡 **Optional, set up later:** there's a fourth property,
+> `CONTRIBUTOR_TOKEN`, used to restrict who can add trees to your map.
+> You don't need it now — see
+> [docs/12-trusted-contributors.md](12-trusted-contributors.md) if you'd
+> like to switch this on later.
+
 ## 3.4 Deploy as a Web App
 
 1. Click **Deploy → New deployment** (top right).

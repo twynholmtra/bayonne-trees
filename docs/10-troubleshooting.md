@@ -24,6 +24,17 @@ Other causes:
 Your spreadsheet has zero rows of tree data. That's expected — add your
 first tree (in the spreadsheet or via the Add Tree button) and refresh.
 
+## I don't see the "+ Add a tree" button
+
+Your map probably has
+[trusted contributors](12-trusted-contributors.md) switched on. The
+button is hidden until you've enrolled this specific device by visiting
+the magic link your map admin gave you. Each device needs to be
+enrolled separately — your phone, your laptop, etc.
+
+If you're the admin and you've forgotten the link, look up the
+`CONTRIBUTOR_TOKEN` value in your Apps Script's Script Properties.
+
 ## Submitted a tree but nothing happens
 
 Because of how Google Apps Script handles cross-origin requests, the browser

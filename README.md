@@ -51,6 +51,8 @@ That's it. Your map is live.
   fixes.
 - **[Keeping your map up to date](docs/11-keeping-up-to-date.md)** — pull in
   improvements from the original project in one click.
+- **[Trusted contributors](docs/12-trusted-contributors.md)** *(optional)* —
+  restrict who can add trees to your map.
 
 ## Credits
 

@@ -11,6 +11,11 @@ Both are fine. Both feed the same sheet.
 
 ## Adding from the map
 
+> 💡 If your map is set up with
+> [trusted contributors](12-trusted-contributors.md), the *"+ Add a tree"*
+> button is hidden until you've enrolled your device — open the magic
+> link your map admin gave you, once on each device.
+
 1. Open your map (`https://your-username.github.io/your-repo/`).
 2. Click **"+ Add a tree"** in the filter panel (or on the welcome card if
    the sheet is empty). A small dialog appears with two ways to place the

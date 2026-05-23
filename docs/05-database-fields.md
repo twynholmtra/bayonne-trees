@@ -33,7 +33,7 @@ minute or two (after a refresh).
 
 ## Special tags
 
-The `Tags` column understands a few values specially:
+The `Tags` and `Condition` columns understand a few values specially:
 
 - **`New`** — any tag containing the word "New" (e.g. `New`, `New 2025`,
   `New 2026`) gives the tree a distinctive diamond-shaped marker and gets it

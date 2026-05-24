@@ -21,7 +21,7 @@ const SHEET_NAME       = 'Trees';
 
 // — Your Apps Script Web App —
 // The "/exec" URL you got after deploying the Apps Script.
-const APPS_SCRIPT_URL  = 'AKfycbx2Pz3uzNHWE3KoI8--E_sThX6IAnIWgmhg0D-c6zUJUsTX8OvSUvqkZgUcDn-CFJyByw';
+const APPS_SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbx2Pz3uzNHWE3KoI8--E_sThX6IAnIWgmhg0D-c6zUJUsTX8OvSUvqkZgUcDn-CFJyByw/exec';
 
 // — Your GitHub repository —
 // "owner/repo" — used to fetch uploaded photos.

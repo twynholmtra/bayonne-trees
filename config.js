@@ -10,22 +10,22 @@
 // — Your park —
 // PARK_NAME is just the park's name (e.g. 'Lillie Park'). The app appends
 // " tree map" where it needs the full title.
-const PARK_NAME        = 'My Park';
-const PARK_DESCRIPTION = 'A short sentence about your park and your group — shown in the Info panel.';
-const CONTACT_EMAIL    = 'friends@example.org';
+const PARK_NAME        = 'Bayonne Park';
+const PARK_DESCRIPTION = 'Also known as Bayonne Road open space, it lies between the Bayonne Road estate and Greyhound Road. Created during the 1980s after a resident-led campaign.';
+const CONTACT_EMAIL    = 'info@twynholmtra.co.u';
 
 // — Your Google Sheet —
 // The long ID between /d/ and /edit in the spreadsheet URL.
-const SHEET_ID         = 'PASTE_YOUR_SHEET_ID_HERE';
+const SHEET_ID         = '1PWh7HCAGLxX_5pFyVdmlJHWvIiIYiOEF8P_BjZ9odew';
 const SHEET_NAME       = 'Trees';
 
 // — Your Apps Script Web App —
 // The "/exec" URL you got after deploying the Apps Script.
-const APPS_SCRIPT_URL  = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+const APPS_SCRIPT_URL  = 'AKfycbx2Pz3uzNHWE3KoI8--E_sThX6IAnIWgmhg0D-c6zUJUsTX8OvSUvqkZgUcDn-CFJyByw';
 
 // — Your GitHub repository —
 // "owner/repo" — used to fetch uploaded photos.
-const GITHUB_REPO      = 'owner/repo';
+const GITHUB_REPO      = 'fulhamcemeteryfriends-dev/bayonne-trees';
 const GITHUB_BRANCH    = 'main';
 
 // — Fallback map view —

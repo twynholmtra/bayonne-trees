@@ -12,7 +12,7 @@
 // " tree map" where it needs the full title.
 const PARK_NAME        = 'Bayonne Park';
 const PARK_DESCRIPTION = 'Also known as Bayonne Road open space, it lies between the Bayonne Road estate and Greyhound Road. Created during the 1980s after a resident-led campaign.';
-const CONTACT_EMAIL    = 'info@twynholmtra.co.u';
+const CONTACT_EMAIL    = 'info@twynholmtra.co.uk';
 
 // — Your Google Sheet —
 // The long ID between /d/ and /edit in the spreadsheet URL.

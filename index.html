@@ -1834,6 +1834,27 @@
     enterMethodSelect();
   }
 
+  // Shown when the CSV fetch fails entirely. Reuses the welcome overlay
+  // element with error-flavoured copy and no CTA, so adopters see something
+  // actionable instead of a void map.
+  function showDataErrorOverlay(err) {
+    const el = document.getElementById('welcome-overlay');
+    if (!el) return;
+    document.getElementById('welcome-title').textContent = 'Tree data not loading';
+    const msg = document.getElementById('welcome-message');
+    if (msg) {
+      msg.textContent =
+        `The map can't reach your Google Sheet. The most common cause is ` +
+        `that the sheet hasn't been Published to the web — see ` +
+        `docs/01-setup-google-sheet.md step 1.2. Other things to check: ` +
+        `SHEET_ID and SHEET_NAME in config.js. Open the browser console ` +
+        `for the underlying error.`;
+    }
+    const cta = el.querySelector('.welcome-cta');
+    if (cta) cta.style.display = 'none';
+    el.classList.add('visible');
+  }
+
   // ── MAP SETUP ────────────────────────────────────────────────────────────────
   const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
@@ -1850,7 +1871,7 @@
     })
   };
 
-  const map = L.map('map');
+  const map = L.map('map').setView(MAP_CENTER, MAP_ZOOM);
   baseLayers['Street map'].addTo(map);
   L.control.layers(baseLayers, null, { position: 'bottomleft' }).addTo(map);
 
@@ -1879,6 +1900,7 @@
     } catch (err) {
       document.getElementById('tree-count').textContent = 'Failed to load data';
       console.error('Could not fetch tree data:', err);
+      showDataErrorOverlay(err);
       return;
     }
 

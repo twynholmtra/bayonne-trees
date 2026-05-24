@@ -26,19 +26,24 @@ The template comes with:
 > If you accidentally do, copy the formula from row 2 of the original
 > template, paste it into your sheet, and drag it down.
 
-## 1.2 Publish the sheet to the web
+## 1.2 Make the sheet readable by anyone with the link
 
-This makes the data readable by the map. It doesn't make the *spreadsheet*
-editable by anyone — only the published data is public.
+> ⚠️ **Without this step the map will be empty.** This is the single
+> most important setting in the whole setup.
 
-```
-File → Share → Publish to web
-```
+The map fetches your tree data by URL — it can't sign in to your
+Google account. So the sheet needs to allow read access without
+signing in.
 
-In the dialog:
+1. Click the **Share** button (top right of the sheet).
+2. Under **General access**, change *Restricted* to **Anyone with the
+   link**.
+3. Make sure the role on the right is set to **Viewer**.
+4. Click **Done**.
 
-- **Link** tab: choose *Entire document* and *Comma-separated values (.csv)*.
-- Click **Publish**, confirm, and close the dialog.
+This only makes the sheet *readable* to anyone who already knows the
+URL — it doesn't make it editable, and nobody can find it by
+searching.
 
 ## 1.3 Copy the Sheet ID
 

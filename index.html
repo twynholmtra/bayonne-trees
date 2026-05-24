@@ -1845,10 +1845,10 @@
     if (msg) {
       msg.textContent =
         `The map can't reach your Google Sheet. The most common cause is ` +
-        `that the sheet hasn't been Published to the web — see ` +
-        `docs/01-setup-google-sheet.md step 1.2. Other things to check: ` +
-        `SHEET_ID and SHEET_NAME in config.js. Open the browser console ` +
-        `for the underlying error.`;
+        `that the sheet's "General access" is still set to Restricted ` +
+        `— see docs/01-setup-google-sheet.md step 1.2. Other things to ` +
+        `check: SHEET_ID and SHEET_NAME in config.js. Open the browser ` +
+        `console for the underlying error.`;
     }
     const cta = el.querySelector('.welcome-cta');
     if (cta) cta.style.display = 'none';

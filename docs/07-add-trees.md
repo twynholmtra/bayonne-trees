@@ -11,10 +11,12 @@ Both are fine. Both feed the same sheet.
 
 ## Adding from the map
 
-> 💡 If your map is set up with
-> [trusted contributors](12-trusted-contributors.md), the *"+ Add a tree"*
-> button is hidden until you've enrolled your device — open the magic
-> link your map admin gave you, once on each device.
+> 💡 The *"+ Add a tree"* button only appears on devices you've
+> [enrolled as a contributor](12-trusted-contributors.md#enrolling-devices).
+> If you don't see it, open the magic link your map admin gave you
+> once on each device. (Unless your map is configured as fully open
+> — see [docs/12](12-trusted-contributors.md) — in which case the
+> button is visible to everyone.)
 
 1. Open your map (`https://your-username.github.io/your-repo/`).
 2. Click **"+ Add a tree"** in the filter panel (or on the welcome card if
@@ -63,10 +65,10 @@ Tap the slot, choose *📁 Choose photo* or *📷 Take photo*, pick or take
 your picture, and the new photo appears in the popup once the upload
 finishes.
 
-> 💡 The *"+📷 Add photo"* slot only appears if your map has
-> [trusted contributors](12-trusted-contributors.md) switched on and
-> your device is enrolled — or if the map is in open mode (any visitor
-> can add). Other visitors only see existing photos.
+> 💡 The *"+📷 Add photo"* slot only appears on devices
+> [enrolled as contributors](12-trusted-contributors.md#enrolling-devices),
+> or on any device if your map is configured as fully open. Other
+> visitors only see existing photos.
 
 ## Adding from the spreadsheet
 

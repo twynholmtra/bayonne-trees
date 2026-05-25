@@ -41,7 +41,9 @@ const MAP_CENTER       = [51.5074, -0.1278]; // [latitude, longitude]
 const MAP_ZOOM         = 17;
 
 // — Trusted contributors —
-// When false (default), anyone with the map URL can use "+ Add a tree".
-// When true, the button is hidden until the visitor enrols their device
-// via a magic link. See docs/12-trusted-contributors.md for setup.
+// When true (default), the "+ Add a tree" button is hidden until a visitor
+// enrols their device via a magic link — the standard recommended setup,
+// so random visitors can't add trees or upload photos. Set to false if you
+// instead want the map fully open (anyone with the URL can add trees).
+// See docs/12-trusted-contributors.md.
 const ENABLE_CONTRIBUTOR_GATE = true;

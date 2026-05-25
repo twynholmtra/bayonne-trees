@@ -48,8 +48,7 @@ refresh the page in your browser before the URL appears.** Open it. You
 should see the welcome screen — the configuration isn't filled in yet, so
 it can't load any data, but that's expected. We'll fix that in step 4.
 
-<!-- TODO: add a screenshot of the Pages page showing the live URL banner -->
-
+<img src="screenshots/step-2-3-gh-pages.png" alt="GitHub Pages page showing the published-site banner with the live URL" width="640" />
 
 ## 2.4 Note your repository name
 

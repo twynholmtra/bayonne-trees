@@ -51,8 +51,9 @@ That's it. Your map is live.
   fixes.
 - **[Keeping your map up to date](docs/11-keeping-up-to-date.md)** — pull in
   improvements from the original project in one click.
-- **[Trusted contributors](docs/12-trusted-contributors.md)** *(optional)* —
-  restrict who can add trees to your map.
+- **[Trusted contributors](docs/12-trusted-contributors.md)** — enrol the
+  devices your volunteers will use to add trees, share the magic link
+  safely, and rotate the password if it ever leaks.
 - **[Using Google Photos](docs/13-google-photos.md)** *(optional)* —
   link to photos hosted in a Google Photos shared album.
 

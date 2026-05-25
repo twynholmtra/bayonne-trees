@@ -23,19 +23,14 @@ The template comes with:
   there.
 - A **`Feedback`** worksheet where comments submitted by users will appear.
 
-> ⚠️ **Two things to leave alone:**
-> 1. **Don't overwrite the formula cells in row 2** of the `Ref` or
->    `Google Maps link` columns. They populate the entire column
->    automatically.
-> 2. **Don't put a tree's Scientific name or Common name in row 2**,
->    and don't insert blank rows below row 2. The Apps Script needs
->    row 2 to stay sorted to the top of the sheet, and uses the bottom
->    of the data range to know where to append new trees.
->
-> If row 2 gets damaged, see
+> ⚠️ **Don't overwrite the formula cells in row 2** of the `Ref` or
+> `Google Maps link` columns. They populate the entire column
+> automatically. If row 2 gets damaged, see
 > [docs/05](05-database-fields.md#dont-touch-these) for how to recover.
 
 ## 1.2 Make the sheet readable by anyone with the link
+
+<img src="screenshots/share-1-2-sheets-share.png" align="right" width="300" alt="Google Sheets Share dialog with General access set to 'Anyone with the link' / Viewer" />
 
 > ⚠️ **Without this step the map will be empty.** This is the single
 > most important setting in the whole setup.

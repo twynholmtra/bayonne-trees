@@ -44,4 +44,4 @@ const MAP_ZOOM         = 17;
 // When false (default), anyone with the map URL can use "+ Add a tree".
 // When true, the button is hidden until the visitor enrols their device
 // via a magic link. See docs/12-trusted-contributors.md for setup.
-const ENABLE_CONTRIBUTOR_GATE = false;
+const ENABLE_CONTRIBUTOR_GATE = true;

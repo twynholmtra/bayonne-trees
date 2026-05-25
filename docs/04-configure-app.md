@@ -136,6 +136,34 @@ The four files:
 Open your live URL (`https://your-username.github.io/my-park-trees/`).
 You should see your park's name in the welcome panel.
 
+## 4.7 Enrol your device
+
+By default, your map only accepts new trees and photo uploads from
+**devices you've explicitly enrolled** — random visitors can't add
+anything. You'll need to enrol each device you'll be using (your
+phone, your laptop, your fellow volunteers' phones, etc.) once.
+
+Open this URL on the device you want to enrol, replacing the
+placeholders with your own values:
+
+```
+https://your-username.github.io/my-park-trees/?enrol=YOUR-CONTRIBUTOR_TOKEN
+```
+
+For example, if your live map is at
+`https://lillie-park.github.io/lillie-trees/` and your
+`CONTRIBUTOR_TOKEN` from step 3.3 is `friends-2026-acorn`, the URL is:
+
+```
+https://lillie-park.github.io/lillie-trees/?enrol=friends-2026-acorn
+```
+
+Open it once, and the *"+ Add a tree"* button appears on that
+device. See [docs/12](12-trusted-contributors.md) for the full
+picture — how to safely share the link with other volunteers, how
+to rotate the token if it leaks, and how to turn this off if you'd
+rather have a fully open map.
+
 ## Next
 
 → [Step 5: Add your first tree](07-add-trees.md)

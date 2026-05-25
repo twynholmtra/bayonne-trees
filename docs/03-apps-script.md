@@ -63,21 +63,22 @@ who can view the project.
 
 1. Click the **gear icon** (Project Settings) in the left sidebar.
 2. Scroll to **Script Properties** and click **Add script property**.
-3. Add three properties:
+3. Add four properties:
 
-   | Property      | Value                                                                                       |
-   |---------------|---------------------------------------------------------------------------------------------|
-   | `SHEET_ID`    | The Sheet ID you copied in step 1.3.                                                        |
-   | `GITHUB_REPO` | `your-username/my-park-trees` — **the full owner/repo pair, separated by a slash.** `your-username` alone won't work. |
-   | `GITHUB_TOKEN`| The `github_pat_…` token from step 3.1.                                                     |
+   | Property            | Value                                                                                       |
+   |---------------------|---------------------------------------------------------------------------------------------|
+   | `SHEET_ID`          | The Sheet ID you copied in step 1.3.                                                        |
+   | `GITHUB_REPO`       | `your-username/my-park-trees` — **the full owner/repo pair, separated by a slash.** `your-username` alone won't work. |
+   | `GITHUB_TOKEN`      | The `github_pat_…` token from step 3.1.                                                     |
+   | `CONTRIBUTOR_TOKEN` | A memorable password of your choice — e.g. `friends-2026-acorn`. This stops random visitors from being able to add trees or upload photos to your map. Anyone you want to give "Add a tree" rights to will use a magic link containing this password. See [docs/12](12-trusted-contributors.md) for the full picture. |
 
 4. **Save script properties**.
 
-> 💡 **Optional, set up later:** there's a fourth property,
-> `CONTRIBUTOR_TOKEN`, used to restrict who can add trees to your map.
-> You don't need it now — see
-> [docs/12-trusted-contributors.md](12-trusted-contributors.md) if you'd
-> like to switch this on later.
+> 💡 Don't want any access control? If you'd rather leave your map
+> fully open (anyone with the URL can add trees), skip
+> `CONTRIBUTOR_TOKEN` here and set `ENABLE_CONTRIBUTOR_GATE = false`
+> in `config.js` later (step 4). See
+> [docs/12](12-trusted-contributors.md) for the trade-offs.
 
 ## 3.4 Deploy as a Web App
 

@@ -26,20 +26,21 @@ first tree (in the spreadsheet or via the Add Tree button) and refresh.
 
 ## I don't see the "+ Add a tree" button
 
-Your map probably has
-[trusted contributors](12-trusted-contributors.md) switched on. The
-button is hidden until you've enrolled this specific device by visiting
-the magic link your map admin gave you. Each device needs to be
-enrolled separately — your phone, your laptop, etc.
+By default the button only appears on devices you've
+[enrolled as a contributor](12-trusted-contributors.md#enrolling-devices) —
+visit the magic enrolment link your map admin gave you, once on this
+device.
 
 If you're the admin and you've forgotten the link, look up the
 `CONTRIBUTOR_TOKEN` value in your Apps Script's Script Properties.
 
+If you'd rather have an open map where anyone can add trees, see
+[docs/12 → Turning gating off](12-trusted-contributors.md#turning-gating-off-fully-open-map).
+
 ## I don't see the "+📷 Add photo" slot in tree popups
 
-Same reason as above — the slot is only shown to enrolled contributors
-when your map uses trusted-contributor mode. Visit your enrolment link
-once on this device.
+Same reason as above — the slot is only shown to enrolled contributors.
+Visit your enrolment link once on this device.
 
 If the tree already has 4 photos (the maximum), the slot is hidden
 even for enrolled contributors — remove one in the spreadsheet's

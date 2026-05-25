@@ -81,8 +81,6 @@ and longitude. Use them as `[51.4807, -0.2158]`.
 
 ## 4.3 Save your changes
 
-<img src="screenshots/step-4-3-commit.png" align="right" width="300" alt="GitHub 'Commit changes' dialog with the commit message field" />
-
 Click the green **Commit changes…** button at the top right of the
 editor. A small dialog appears:
 
@@ -91,6 +89,8 @@ editor. A small dialog appears:
 - Click **Commit changes**.
 
 GitHub Pages will rebuild your site within about 30 seconds.
+
+<img src="screenshots/step-4-3-commit.png" width="640" alt="GitHub 'Commit changes' dialog with the commit message field" />
 
 ## 4.4 Update `manifest.json` (optional)
 

@@ -11,6 +11,8 @@ This is the most fiddly step. Take it slowly, and you only do it once.
 
 ## 3.1 Create a fine-grained GitHub Personal Access Token
 
+<img src="screenshots/step-3-1-github-pat.png" align="right" width="300" alt="GitHub fine-grained Personal Access Token form" />
+
 The Apps Script needs permission to write photo files into your GitHub repo.
 We give it permission via a *fine-grained* Personal Access Token (PAT) that
 can **only** touch the one repository — much safer than a classic token.
@@ -32,11 +34,15 @@ can **only** touch the one repository — much safer than a classic token.
    - (Everything else: ignore.)
    - GitHub will also add **Metadata: Read-only** automatically — that's
      required and you can ignore it too.
+
+   <img src="screenshots/step-3-1-github-pat-permissions.png" alt="Permissions section with Contents: Read and write and Metadata: Read-only added" width="640" />
 8. Click **Generate token**, then copy the long string starting with
    `github_pat_…`. **You won't be able to see it again** — copy it somewhere
    safe while you complete this step.
 
 ## 3.2 Create the Apps Script project
+
+<img src="screenshots/step-3-2-apps-script.png" align="right" width="300" alt="Apps Script editor with the project's code pasted in" />
 
 1. Go to <https://script.google.com> and click **New project**.
 2. Replace the placeholder `myFunction` code with the entire contents of
@@ -82,6 +88,8 @@ who can view the project.
 
 ## 3.4 Deploy as a Web App
 
+<img src="screenshots/step-3-4-apps-script-deploy.png" align="right" width="300" alt="Apps Script 'New deployment' dialog with Web app type selected" />
+
 1. Click **Deploy → New deployment** (top right).
 2. Click the **gear icon** next to *Select type* and choose **Web app**.
 3. Fill in:
@@ -102,6 +110,8 @@ who can view the project.
    > `https://script.google.com/macros/s/AKfycb…long-string…/exec`
    > and must start with `https://` and end with `/exec`. Just the
    > `AKfycb…` ID on its own won't work.
+
+<img src="screenshots/step-3-4-test-deployments.png" alt="Apps Script 'Test deployments' / Manage deployments dialog showing the Web app URL" width="640" />
 
 ## 3.5 Sanity check
 

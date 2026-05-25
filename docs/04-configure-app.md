@@ -74,10 +74,10 @@ now, add your first tree using the *"Current location"* button (or by
 clicking on a satellite view of your park), then come back and update
 `MAP_CENTER` later if you want a specific framing.
 
-If you do want to set it now: open <https://www.openstreetmap.org>, find
-your park, right-click in the centre and choose *Centre map here*. The URL
-bar will then show `…?mlat=51.4807&mlon=-0.2158…` — those are your latitude
-and longitude. Use them as `[51.4807, -0.2158]`.
+If you do want to set it now: open <https://www.openstreetmap.org>,
+navigate to your park, and look at the URL bar — it'll show something
+like `…/#map=19/51.485142/-0.215255`. The two decimal numbers are
+your latitude and longitude. Use them as `[51.485142, -0.215255]`.
 
 ## 4.3 Save your changes
 

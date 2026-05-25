@@ -18,7 +18,7 @@ const CONTACT_EMAIL    = '';
 
 // Optional. Your park or Friends-group website. Shown as a link in the
 // Info panel. Leave as '' to hide.
-const WEBSITE_URL      = 'https://www.twynholmtra.co.uk/';
+const WEBSITE_URL      = '';
 
 // — Your Google Sheet —
 // The long ID between /d/ and /edit in the spreadsheet URL.

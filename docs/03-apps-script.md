@@ -53,6 +53,8 @@ can **only** touch the one repository — much safer than a classic token.
 
 ## 3.3 Set the Script Properties
 
+<img src="screenshots/step-3-3-script-properties.png" align="right" width="300" alt="Apps Script Project Settings → Script Properties editor with four properties added" />
+
 The script reads three values from *Script Properties* — never paste
 them into the script body itself, where they'd be readable by anyone
 who can view the project.
@@ -85,6 +87,7 @@ who can view the project.
 ## 3.4 Deploy as a Web App
 
 <img src="screenshots/step-3-4-apps-script-deploy.png" align="right" width="300" alt="Apps Script 'New deployment' dialog with Web app type selected" />
+<img src="screenshots/step-3-4-deploy.png" align="right" width="300" alt="Apps Script Deploy menu" />
 
 1. Click **Deploy → New deployment** (top right).
 2. Click the **gear icon** next to *Select type* and choose **Web app**.

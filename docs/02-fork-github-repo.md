@@ -8,14 +8,20 @@ takes about 5 minutes.
 If you don't already have one, sign up at <https://github.com/signup>. The
 free plan is fine.
 
+> 💡 Pick a username that suits your park or Friends group — it'll
+> appear in your map's web address (e.g.
+> `lillie-park.github.io/…`) unless you later set up your own domain
+> name.
+
 ## 2.2 Fork this repository
 
 On the park-treemap repository page, click the **Fork** button (top right).
 GitHub will copy the project to your own account.
 
-You can name the fork whatever you like, e.g. `my-park-trees`. Leave the
-*"Copy the main branch only"* checkbox **ticked**, and keep the repository
-**Public**.
+You can name the fork whatever you like, e.g. `my-park-trees`. For the
+**Description**, something like *"A map of the trees in Lillie Park,
+London"* works well. Leave the *"Copy the main branch only"* checkbox
+**ticked**, and keep the repository **Public**.
 
 Click **Create fork**.
 
@@ -37,9 +43,13 @@ Under **Build and deployment**:
 Click **Save**.
 
 Within a minute or two, the *Pages* page will show your live URL — something
-like `https://your-username.github.io/my-park-trees/`. Open it. You should
-see the welcome screen — the configuration isn't filled in yet, so it can't
-load any data, but that's expected. We'll fix that in step 4.
+like `https://your-username.github.io/my-park-trees/`. **You may need to
+refresh the page in your browser before the URL appears.** Open it. You
+should see the welcome screen — the configuration isn't filled in yet, so
+it can't load any data, but that's expected. We'll fix that in step 4.
+
+<!-- TODO: add a screenshot of the Pages page showing the live URL banner -->
+
 
 ## 2.4 Note your repository name
 

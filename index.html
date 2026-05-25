@@ -912,7 +912,8 @@
     <img id="info-icon" src="icons/icon-192.png" alt="" />
     <h2 id="info-title"></h2>
     <p id="info-description"></p>
-    <div class="info-row">Contact: <a id="info-contact" href="#"></a></div>
+    <div class="info-row" id="info-website-row">Website: <a id="info-website" href="#" target="_blank" rel="noopener"></a></div>
+    <div class="info-row" id="info-contact-row">Contact: <a id="info-contact" href="#"></a></div>
     <div id="info-attribution">
       Built with <a href="https://github.com/fjordaan/park-treemap" target="_blank" rel="noopener">park-treemap</a> — a free, self-hosted tree-map template for any park's "Friends of" group.
     </div>
@@ -1205,10 +1206,28 @@
   function populateInfoModal() {
     const titleEl = document.getElementById('info-title');
     const descEl  = document.getElementById('info-description');
-    const cEl     = document.getElementById('info-contact');
     if (titleEl) titleEl.textContent = APP_TITLE;
     if (descEl)  descEl.textContent  = PARK_DESCRIPTION;
-    if (cEl)     { cEl.textContent = CONTACT_EMAIL; cEl.href = `mailto:${CONTACT_EMAIL}`; }
+
+    // Website row (optional)
+    const wEl  = document.getElementById('info-website');
+    const wRow = document.getElementById('info-website-row');
+    if (WEBSITE_URL) {
+      if (wEl)  { wEl.textContent = WEBSITE_URL.replace(/^https?:\/\//, '').replace(/\/$/, ''); wEl.href = WEBSITE_URL; }
+      if (wRow) wRow.style.display = '';
+    } else {
+      if (wRow) wRow.style.display = 'none';
+    }
+
+    // Contact row (optional)
+    const cEl  = document.getElementById('info-contact');
+    const cRow = document.getElementById('info-contact-row');
+    if (CONTACT_EMAIL) {
+      if (cEl)  { cEl.textContent = CONTACT_EMAIL; cEl.href = `mailto:${CONTACT_EMAIL}`; }
+      if (cRow) cRow.style.display = '';
+    } else {
+      if (cRow) cRow.style.display = 'none';
+    }
   }
 
   function openInfoModal() {
@@ -1495,14 +1514,16 @@
     const formId = `ff-${ref.replace(/\./g, '-')}`;
     const sciName = (tree['Scientific name'] || '').replace(/'/g, '&#39;');
     const mailSubject = encodeURIComponent(`Feedback on tree ${ref} (${tree['Scientific name'] || ''})`);
-    const mailtoHref = `mailto:${CONTACT_EMAIL}?subject=${mailSubject}`;
+    const mailtoLink = CONTACT_EMAIL
+      ? `<a href="mailto:${CONTACT_EMAIL}?subject=${mailSubject}" style="margin-left:auto;font-size:11px;color:#2a7ae2;text-decoration:none;white-space:nowrap;">&#9993; Send email instead</a>`
+      : '';
     const feedback = `<a class="feedback-link" href="#" onclick="toggleFeedbackForm('${formId}'); return false;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Feedback</a>`;
     html += `<div class="links"><span>${links.join(' &bull; ')}</span>${feedback}</div>`;
     html += `<div class="feedback-form" id="${formId}" data-ref="${ref}" data-tree="${sciName}">
       <textarea rows="3" placeholder="Your comment about this tree…"></textarea>
       <div class="feedback-actions">
         <button onclick="submitFeedback('${ref}', this.closest('.feedback-form'))">Send</button>
-        <a href="${mailtoHref}" style="margin-left:auto;font-size:11px;color:#2a7ae2;text-decoration:none;white-space:nowrap;">&#9993; Send email instead</a>
+        ${mailtoLink}
       </div>
       <div class="feedback-status"></div>
     </div>`;
@@ -2141,8 +2162,13 @@
     sheet.querySelector('textarea').value = '';
     sheet.querySelector('.feedback-status').textContent = '';
     const mailSubject = encodeURIComponent(`Feedback on tree ${ref} (${sciName})`);
-    document.getElementById('feedback-sheet-mailto').href =
-      `mailto:${CONTACT_EMAIL}?subject=${mailSubject}`;
+    const mailtoEl = document.getElementById('feedback-sheet-mailto');
+    if (CONTACT_EMAIL) {
+      mailtoEl.href = `mailto:${CONTACT_EMAIL}?subject=${mailSubject}`;
+      mailtoEl.style.display = '';
+    } else {
+      mailtoEl.style.display = 'none';
+    }
     document.getElementById('feedback-backdrop').classList.add('open');
     sheet.classList.add('open');
     setTimeout(() => sheet.querySelector('textarea').focus(), 320);

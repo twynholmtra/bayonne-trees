@@ -17,7 +17,8 @@ You'll see a short file that looks like this:
 // — Your park —
 const PARK_NAME        = 'My Park';
 const PARK_DESCRIPTION = 'A short sentence about your park and your group.';
-const CONTACT_EMAIL    = 'friends@example.org';
+const CONTACT_EMAIL    = ''; // optional
+const WEBSITE_URL      = ''; // optional
 
 // — Your Google Sheet —
 const SHEET_ID         = 'PASTE_YOUR_SHEET_ID_HERE';
@@ -45,20 +46,22 @@ value is text.
 |----------------------|-------------------------------------------------------------|
 | `PARK_NAME`          | Just the park's name, e.g. `'Lillie Park'`. The app adds *"tree map"* itself where it needs the full title. |
 | `PARK_DESCRIPTION`   | One sentence about your park and group — shown in the Info panel that anyone can open from the top of the map. |
-| `CONTACT_EMAIL`      | Where feedback emails should go.                            |
+| `CONTACT_EMAIL`      | *Optional.* Where feedback emails should go. Leave as `''` to hide the email contact from the Info panel and the *"Send email instead"* link. |
+| `WEBSITE_URL`        | *Optional.* Your park or Friends-group website (e.g. `'https://lillieparkfriends.org'`). Shown as a link in the Info panel. Leave as `''` to hide. |
 | `SHEET_ID`           | The long ID from step 1.3.                                  |
 | `SHEET_NAME`         | Leave as `'Trees'` unless you renamed the worksheet.        |
 | `APPS_SCRIPT_URL`    | The `/exec` URL from step 3.4.                              |
-| `GITHUB_REPO`        | `'your-username/my-park-trees'` from step 2.4.              |
+| `GITHUB_REPO`        | `'your-username/my-park-trees'` from step 2.4 — you can also read it straight out of your fork's browser address bar (the bit after `github.com/`). |
 | `GITHUB_BRANCH`      | Almost always leave as `'main'`.                            |
 | `MAP_CENTER`         | Only matters before you add your first tree. See below.     |
 | `MAP_ZOOM`           | 17 is a sensible default for a park.                        |
 
-> 💡 **Tip about `CONTACT_EMAIL`:** this address is shown in the map
-> and so will be visible to anyone — including spam bots that scrape
-> for email addresses. It's worth using a group or forwarding address
-> (e.g. `treemap@your-friends-group.org`) rather than someone's
-> personal email.
+> 💡 **About `CONTACT_EMAIL`:** any address you put here is visible
+> in the map source and can be scraped by spam bots. If you'd rather
+> not expose an address, leave it as `''` and visitors won't see an
+> email contact at all. If you do want to offer one, a group or
+> forwarding address (e.g. `treemap@your-friends-group.org`) is
+> safer than someone's personal email.
 
 ### About `MAP_CENTER`
 
@@ -78,7 +81,8 @@ and longitude. Use them as `[51.4807, -0.2158]`.
 
 ## 4.3 Save your changes
 
-Scroll to the bottom of the file editor:
+Click the green **Commit changes…** button at the top right of the
+editor. A small dialog appears:
 
 - **Commit message**: e.g. *"Configure for My Park"*.
 - Leave **"Commit directly to the `main` branch"** selected.
@@ -91,11 +95,16 @@ GitHub Pages will rebuild your site within about 30 seconds.
 `manifest.json` controls how the app appears when someone installs it on
 their phone. Open it in GitHub, click the pencil, and update:
 
-- `"name"` and `"short_name"` — your park name.
-- `"description"` — one sentence about the map.
-- `"background_color"` and `"theme_color"` — colours shown on the install
-  splash screen. Pick whatever fits your park's branding, or leave the
-  defaults.
+- `"name"` — the full app name, e.g. *"Lillie Park tree map"*.
+- `"short_name"` — a shorter form (12 characters or less) shown
+  under the app icon on your phone's home screen when the full name
+  would be too long. E.g. *"Lillie trees"*.
+- `"description"` — one sentence about the map. Shown by some
+  browsers in the install confirmation dialog; rarely visible
+  otherwise, but worth filling in.
+- `"background_color"` and `"theme_color"` — colours shown on the
+  install splash screen. Pick whatever fits your park's branding,
+  or leave the defaults.
 
 > ⚠️ Leave `"start_url"` and `"scope"` set to `"./"`.
 

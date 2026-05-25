@@ -12,7 +12,13 @@
 // " tree map" where it needs the full title.
 const PARK_NAME        = 'My Park';
 const PARK_DESCRIPTION = 'A short sentence about your park and your group — shown in the Info panel.';
-const CONTACT_EMAIL    = 'friends@example.org';
+// Optional. Leave as '' to hide the email contact from the Info panel
+// and the feedback "Send email instead" link.
+const CONTACT_EMAIL    = '';
+
+// Optional. Your park or Friends-group website. Shown as a link in the
+// Info panel. Leave as '' to hide.
+const WEBSITE_URL      = '';
 
 // — Your Google Sheet —
 // The long ID between /d/ and /edit in the spreadsheet URL.

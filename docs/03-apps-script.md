@@ -17,15 +17,22 @@ can **only** touch the one repository — much safer than a classic token.
 
 1. Go to <https://github.com/settings/personal-access-tokens/new>.
 2. **Token name**: e.g. *park-treemap photo upload*.
-3. **Expiration**: 1 year is reasonable. Set a calendar reminder for the
-   day before it expires (see [Troubleshooting](10-troubleshooting.md) for
-   what happens if you forget).
+3. **Description**: optional, e.g. *"Used by the Apps Script that
+   uploads tree photos to my park-treemap repo."*
 4. **Resource owner**: choose your account (the one that owns the fork).
-5. **Repository access**: *Only select repositories* → pick your forked repo.
-6. **Permissions** → *Repository permissions*:
+5. **Expiration**: 1 year is reasonable. The dropdown doesn't have a
+   1-year option — choose **Custom** and pick a date a year from now.
+   Set a calendar reminder for the day before it expires (see
+   [Troubleshooting](10-troubleshooting.md) for what happens if you
+   forget).
+6. **Repository access**: *Only select repositories* → pick your forked repo.
+7. **Permissions**: click the **Add permissions** button, then under
+   *Repository permissions* set:
    - **Contents**: **Read and write**
-   - (Everything else: leave as "No access".)
-7. Click **Generate token**, then copy the long string starting with
+   - (Everything else: ignore.)
+   - GitHub will also add **Metadata: Read-only** automatically — that's
+     required and you can ignore it too.
+8. Click **Generate token**, then copy the long string starting with
    `github_pat_…`. **You won't be able to see it again** — copy it somewhere
    safe while you complete this step.
 
@@ -34,6 +41,10 @@ can **only** touch the one repository — much safer than a classic token.
 1. Go to <https://script.google.com> and click **New project**.
 2. Replace the placeholder `myFunction` code with the entire contents of
    [`apps-script.gs`](../apps-script.gs) from your forked repo.
+   > 💡 On the GitHub page for `apps-script.gs`, click the **Raw**
+   > button (top-right of the file viewer) first. That opens the file
+   > as plain text — *Select All → Copy* then gets exactly the code,
+   > with no line numbers or other GitHub UI mixed in.
 3. Rename the project (top-left, *"Untitled project"*) to e.g.
    *"Park Tree Map backend"*.
 4. Save (Ctrl+S / Cmd+S).
@@ -51,7 +62,7 @@ who can view the project.
 > Apps Script. **Both have to be set, with the same values.**
 
 1. Click the **gear icon** (Project Settings) in the left sidebar.
-2. Scroll to **Script Properties** and click **Edit script properties**.
+2. Scroll to **Script Properties** and click **Add script property**.
 3. Add three properties:
 
    | Property      | Value                                                                                       |
@@ -79,9 +90,11 @@ who can view the project.
 4. Click **Deploy**.
 5. The first time, Google will ask you to authorise the script. Click
    **Authorize access**, choose your account, and click *Advanced → Go to
-   (project name) (unsafe)* (this warning is normal for your own scripts) →
-   **Allow**.
-6. After deployment, copy the **Web app URL**. You'll paste this into
+   (project name) (unsafe)* (this warning is normal for your own scripts).
+6. A *"Select what (your-name) can access"* screen appears listing the
+   permissions the script needs. Tick **Select all**, then click
+   **Continue**, then **Allow** on the final summary.
+7. After deployment, copy the **Web app URL**. You'll paste this into
    `config.js` in step 4.
 
    > ⚠️ Copy the **whole URL**, not just the deployment ID. It looks like:

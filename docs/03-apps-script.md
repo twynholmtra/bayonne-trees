@@ -29,20 +29,14 @@ can **only** touch the one repository — much safer than a classic token.
    forget).
 6. **Repository access**: *Only select repositories* → pick your forked repo.
 7. **Permissions**: click the **Add permissions** button, then under
-   *Repository permissions* set:
-   - **Contents**: **Read and write**
-   - (Everything else: ignore.)
-   - GitHub will also add **Metadata: Read-only** automatically — that's
-     required and you can ignore it too.
-
+   *Repository permissions* set: **Contents**: **Read and write** (Everything else: ignore.
+   GitHub will also add **Metadata** — ignore.)
    <img src="screenshots/step-3-1-github-pat-permissions.png" alt="Permissions section with Contents: Read and write and Metadata: Read-only added" width="640" />
-8. Click **Generate token**, then copy the long string starting with
+9. Click **Generate token**, then copy the long string starting with
    `github_pat_…`. **You won't be able to see it again** — copy it somewhere
    safe while you complete this step.
 
 ## 3.2 Create the Apps Script project
-
-<img src="screenshots/step-3-2-apps-script.png" align="right" width="300" alt="Apps Script editor with the project's code pasted in" />
 
 1. Go to <https://script.google.com> and click **New project**.
 2. Replace the placeholder `myFunction` code with the entire contents of
@@ -54,6 +48,8 @@ can **only** touch the one repository — much safer than a classic token.
 3. Rename the project (top-left, *"Untitled project"*) to e.g.
    *"Park Tree Map backend"*.
 4. Save (Ctrl+S / Cmd+S).
+
+<img src="screenshots/step-3-2-apps-script.png" width="640" alt="Apps Script editor with the project's code pasted in" />
 
 ## 3.3 Set the Script Properties
 

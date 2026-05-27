@@ -794,7 +794,8 @@
     .map-header-info svg { display: block; }
     @media (max-width: 767px) {
       .map-header { max-width: calc(100vw - 20px); font-size: 13px; }
-      body.panel-open .map-header { display: none; }
+      body.panel-open .map-header,
+      body.popup-open .map-header { display: none; }
     }
 
     /* ── Info modal (centred desktop / bottom sheet mobile) ── */
@@ -2275,6 +2276,8 @@
     );
   }
 
+  map.on('popupopen',  () => document.body.classList.add('popup-open'));
+  map.on('popupclose', () => document.body.classList.remove('popup-open'));
   map.on('popupclose', closeFeedbackSheet);
 
   // ── INSTALL BANNER ───────────────────────────────────────────────────────────

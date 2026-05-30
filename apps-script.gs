@@ -63,6 +63,7 @@ function doPost(e) {
       case 'addTree':       return requireContributorToken(data) || handleAddTree(data);
       case 'uploadPhoto':   return requireContributorToken(data) || handleUploadPhoto(data);
       case 'appendPhotos':  return requireContributorToken(data) || handleAppendPhotos(data);
+      case 'deletePhoto':   return requireContributorToken(data) || handleDeletePhoto(data);
       default:              return jsonResponse({ status: 'error', message: 'Unknown action: ' + data.action });
     }
   } catch (err) {
@@ -177,6 +178,25 @@ function handleUploadPhoto(data) {
   return jsonResponse({ status: 'ok', path: path });
 }
 
+// ── Locate a tree row by Ref ──────────────────────────────────────────────────
+// Returns { rowNum, photosCol } if the tree is found, or null otherwise.
+// Shared by handleAppendPhotos and handleDeletePhoto.
+function findTreeRow(sheet, ref) {
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const refCol    = headers.indexOf('Ref') + 1;
+  const photosCol = headers.indexOf('Photos') + 1;
+  if (!refCol || !photosCol) return { error: 'Ref or Photos column not found' };
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return null;
+  const refs = sheet.getRange(2, refCol, lastRow - 1, 1).getValues();
+  for (let i = 0; i < refs.length; i++) {
+    if (String(refs[i][0]) === String(ref)) {
+      return { rowNum: i + 2, photosCol: photosCol };
+    }
+  }
+  return null;
+}
+
 // ── Append photos to an existing tree ─────────────────────────────────────────
 // Used when a contributor adds a photo to a tree from inside its popup.
 // Identifies the row by Ref and appends the new paths to the Photos cell.
@@ -189,31 +209,94 @@ function handleAppendPhotos(data) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const ss      = SpreadsheetApp.openById(sheetId());
-    const sheet   = ss.getSheetByName(TREES_SHEET);
+    const sheet = SpreadsheetApp.openById(sheetId()).getSheetByName(TREES_SHEET);
     if (!sheet) return jsonResponse({ status: 'error', message: 'Sheet "' + TREES_SHEET + '" not found' });
-    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    const refCol    = headers.indexOf('Ref') + 1;
-    const photosCol = headers.indexOf('Photos') + 1;
-    if (!refCol || !photosCol) {
-      return jsonResponse({ status: 'error', message: 'Ref or Photos column not found' });
-    }
-    const lastRow = sheet.getLastRow();
-    if (lastRow < 2) return jsonResponse({ status: 'error', message: 'Tree not found' });
-    const refs = sheet.getRange(2, refCol, lastRow - 1, 1).getValues();
-    let rowIdx = -1;
-    for (let i = 0; i < refs.length; i++) {
-      if (String(refs[i][0]) === String(data.ref)) { rowIdx = i; break; }
-    }
-    if (rowIdx < 0) return jsonResponse({ status: 'error', message: 'Tree not found: ' + data.ref });
-    const rowNum  = rowIdx + 2;
-    const cell    = sheet.getRange(rowNum, photosCol);
+    const row = findTreeRow(sheet, data.ref);
+    if (row && row.error) return jsonResponse({ status: 'error', message: row.error });
+    if (!row) return jsonResponse({ status: 'error', message: 'Tree not found: ' + data.ref });
+    const cell    = sheet.getRange(row.rowNum, row.photosCol);
     const current = String(cell.getValue() || '').trim();
     const existing = current ? current.split(',').map(s => s.trim()).filter(Boolean) : [];
     if (existing.length + data.paths.length > 4) {
       return jsonResponse({ status: 'error', message: 'Photo cap of 4 would be exceeded' });
     }
     const next = existing.concat(data.paths).join(', ');
+    cell.setValue(next);
+    return jsonResponse({ status: 'ok', photos: next });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// ── Delete a photo from an existing tree ──────────────────────────────────────
+// Removes the file from the GitHub repo via the Contents API and strips its
+// path from the tree's Photos cell. Wrapped in a script lock so it can't race
+// with handleAppendPhotos on the same row.
+function handleDeletePhoto(data) {
+  if (!data.ref || !data.path) {
+    return jsonResponse({ status: 'error', message: 'Missing ref or path' });
+  }
+  // Reject anything that tries to escape the photos/ directory.
+  if (data.path.indexOf('..') !== -1 || data.path.indexOf(PHOTOS_DIR + '/') !== 0) {
+    return jsonResponse({ status: 'error', message: 'Invalid path' });
+  }
+  const repo  = githubRepo();
+  const token = githubToken();
+  if (!repo || !token) {
+    return jsonResponse({ status: 'error', message: 'GITHUB_REPO and/or GITHUB_TOKEN script properties not set' });
+  }
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    // 1) Look up the file's blob sha, then delete it from the repo.
+    const apiUrl = 'https://api.github.com/repos/' + repo + '/contents/' + data.path;
+    const headers = {
+      Authorization: 'Bearer ' + token,
+      Accept:        'application/vnd.github+json'
+    };
+    const getResp = UrlFetchApp.fetch(apiUrl, {
+      method: 'get',
+      headers: headers,
+      muteHttpExceptions: true
+    });
+    const getCode = getResp.getResponseCode();
+    if (getCode === 404) {
+      // File already gone in the repo — fall through and still tidy the sheet.
+      Logger.log('Photo not in repo (already deleted?): ' + data.path);
+    } else if (getCode < 200 || getCode >= 300) {
+      Logger.log('GitHub GET failed (' + getCode + '): ' + getResp.getContentText());
+      return jsonResponse({ status: 'error', code: getCode, message: getResp.getContentText() });
+    } else {
+      const sha = JSON.parse(getResp.getContentText()).sha;
+      const delResp = UrlFetchApp.fetch(apiUrl, {
+        method: 'delete',
+        contentType: 'application/json',
+        headers: headers,
+        payload: JSON.stringify({
+          message: 'Delete photo ' + data.path + ' via park-treemap',
+          sha:     sha,
+          branch:  GITHUB_BRANCH
+        }),
+        muteHttpExceptions: true
+      });
+      const delCode = delResp.getResponseCode();
+      if (delCode < 200 || delCode >= 300) {
+        Logger.log('GitHub DELETE failed (' + delCode + '): ' + delResp.getContentText());
+        return jsonResponse({ status: 'error', code: delCode, message: delResp.getContentText() });
+      }
+    }
+    // 2) Strip the path from the tree's Photos cell.
+    const sheet = SpreadsheetApp.openById(sheetId()).getSheetByName(TREES_SHEET);
+    if (!sheet) return jsonResponse({ status: 'error', message: 'Sheet "' + TREES_SHEET + '" not found' });
+    const row = findTreeRow(sheet, data.ref);
+    if (row && row.error) return jsonResponse({ status: 'error', message: row.error });
+    if (!row) return jsonResponse({ status: 'error', message: 'Tree not found: ' + data.ref });
+    const cell    = sheet.getRange(row.rowNum, row.photosCol);
+    const current = String(cell.getValue() || '').trim();
+    const remaining = current
+      ? current.split(',').map(s => s.trim()).filter(p => p && p !== data.path)
+      : [];
+    const next = remaining.join(', ');
     cell.setValue(next);
     return jsonResponse({ status: 'ok', photos: next });
   } finally {

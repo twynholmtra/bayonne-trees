@@ -73,21 +73,21 @@ finishes.
 ## Removing a photo from a tree
 
 If you're enrolled as a contributor, each uploaded photo in the popup
-has a small **trash icon** in its top-right corner. Tapping it opens
-that photo's **Delete file** page on GitHub in a new tab — click
-**Commit changes** there to remove it. (The trash icon only appears on
-photos hosted in your repo; photos linked from elsewhere, like Google
-Photos, don't show it — remove those at their original home.)
+has a small **trash icon** in its top-right corner. Tap it, confirm
+**OK** in the prompt, and the photo disappears from the popup. Behind
+the scenes the file is removed from your GitHub repo *and* its path is
+stripped from the tree's `Photos` cell — no spreadsheet tidy-up
+required.
 
-Two things to know:
+> 💡 The trash icon only appears on photos hosted in your repo. Photos
+> linked from elsewhere (Google Photos, Flickr, your group's website,
+> …) don't show it — remove those at their original home and then
+> clear the URL from the `Photos` cell yourself.
 
-- Deleting the file doesn't remove its reference from the spreadsheet.
-  After deleting, also clear that photo's path from the tree's `Photos`
-  cell, or the map will show a broken thumbnail until you do.
-- The file stays in your repository's history even after deletion (this
-  is just how git works). For ordinary tidying that's fine; for
-  genuinely sensitive content the only complete removal is to delete
-  the whole repository.
+One thing to know: the file stays in your repository's history even
+after deletion (this is just how git works). For ordinary tidying
+that's fine; for genuinely sensitive content the only complete removal
+is to delete the whole repository.
 
 ## Adding from the spreadsheet
 
@@ -132,8 +132,7 @@ track losses over time.
 > ⚠️ If you delete a tree row that has uploaded photos, those photo files
 > stay in your `photos/` folder in the repo, taking up space. They're not
 > visible anywhere but they're not free either. Clean them up via the
-> trash icon on each photo in the popup *before* deleting the row, or
-> later in the GitHub web UI (open the file → delete → commit). See
+> trash icon on each photo in the popup *before* deleting the row — see
 > [Removing a photo from a tree](#removing-a-photo-from-a-tree) above.
 
 ## Mobile-specific tips

@@ -622,11 +622,14 @@
       position: absolute;
       top: 4px; right: 4px;
       width: 22px; height: 22px;
+      border: none;
+      padding: 0;
       border-radius: 50%;
       background: rgba(0,0,0,0.55);
       color: white;
       display: flex; align-items: center; justify-content: center;
       text-decoration: none;
+      cursor: pointer;
       opacity: 0.7;
       transition: opacity 0.15s, background 0.15s;
     }
@@ -1487,16 +1490,6 @@
     return GITHUB_PHOTOS_BASE_URL + rel;
   }
 
-  // For a repo-hosted photo, build the GitHub "delete file" URL that takes
-  // an enrolled contributor straight to the confirmation page on GitHub.
-  // Returns null for external URLs (Google Photos etc.) — those can only be
-  // removed at their original host.
-  function repoPhotoDeleteUrl(raw) {
-    if (!raw || /^https?:\/\//i.test(raw)) return null;
-    const rel = raw.replace(/^\/+/, '').replace(/^photos\//, '');
-    return `https://github.com/${GITHUB_REPO}/delete/${GITHUB_BRANCH}/photos/${rel}`;
-  }
-
   function parsePhotos(photoStr) {
     if (!photoStr) return [];
     return photoStr.split(',').map(s => s.trim()).filter(Boolean);
@@ -1546,16 +1539,20 @@
       html += `<div class="photos">`;
       const resolvedPhotos = photos.map(p => resolvePhotoUrl(p, 'w1600'));
       const resolvedAttr = JSON.stringify(resolvedPhotos).replace(/"/g, '&quot;');
+      const refAttr = (tree['Ref'] || '').replace(/'/g, '\\\'');
       photos.forEach((raw, i) => {
         const thumb = resolvePhotoUrl(raw, 'w280');
-        const deleteUrl = canContribute() ? repoPhotoDeleteUrl(raw) : null;
-        const deleteOverlay = deleteUrl
-          ? `<a class="photo-delete" href="${esc(deleteUrl)}" target="_blank" rel="noopener" title="Delete this photo on GitHub" onclick="event.stopPropagation();"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></a>`
+        // Only repo-hosted photos can be deleted via the Apps Script.
+        // External photos (Google Photos etc.) must be removed at their host.
+        const isRepoPhoto = raw && !/^https?:\/\//i.test(raw);
+        const showDelete  = canContribute() && isRepoPhoto && tree['Ref'];
+        const pathAttr    = raw.replace(/'/g, '\\\'');
+        const deleteOverlay = showDelete
+          ? `<button type="button" class="photo-delete" title="Remove this photo" onclick="event.stopPropagation(); deletePhotoFromTree('${refAttr}', '${pathAttr}'); return false;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>`
           : '';
         html += `<div class="photo-thumb-wrap"><a class="photo-thumb-link" href="#" data-photos="${resolvedAttr}" data-index="${i}" onclick="openLightbox(JSON.parse(this.dataset.photos), +this.dataset.index); return false;"><img src="${thumb}" loading="lazy" referrerpolicy="no-referrer" alt="Tree photo"/></a>${deleteOverlay}</div>`;
       });
       if (canAddPhoto) {
-        const refAttr = (tree['Ref'] || '').replace(/'/g, '\\\'');
         html += `<button type="button" class="photo-add-slot" title="Add a photo to this tree" onclick="addPhotoToExistingTree('${refAttr}'); return false;"><span class="photo-add-slot-icon">+📷</span><span class="photo-add-slot-label">Add photo</span></button>`;
       }
       html += `</div>`;
@@ -2714,6 +2711,40 @@
         paths
       })
     });
+  }
+
+  function deletePhotoFromScript(ref, path) {
+    return fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        action: 'deletePhoto',
+        token: readContributorToken(),
+        ref,
+        path
+      })
+    });
+  }
+
+  // ── Remove a photo from an existing tree (called from the popup trash) ────
+  // Confirms, fires the Apps Script delete (no-cors, so we can't read the
+  // result), then optimistically drops the path from the in-memory tree and
+  // re-renders the popup. If the server-side delete failed the photo will
+  // reappear on next page reload — same trade-off as the add-photo flow.
+  async function deletePhotoFromTree(ref, path) {
+    if (!canContribute() || !ref || !path) return;
+    if (!confirm('Remove this photo?')) return;
+    let tree = null;
+    markers.forEach((_marker, t) => { if (!tree && t['Ref'] === ref) tree = t; });
+    if (!tree) return;
+    try { await deletePhotoFromScript(ref, path); }
+    catch (err) { console.warn('deletePhoto failed:', err); }
+    const remaining = parsePhotos(tree['Photos']).filter(p => p !== path);
+    tree['Photos'] = remaining.join(', ');
+    const popup = markers.get(tree)?.getPopup();
+    if (popup) popup.setContent(buildPopup(tree));
+    showToast('Photo removed.');
   }
 
   // ── Add a photo to an existing tree (called from the popup slot) ──────────

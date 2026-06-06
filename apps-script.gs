@@ -1,10 +1,14 @@
 /**
  * Park Tree Map — combined Apps Script Web App
  *
- * Handles three browser actions via a single Web App URL:
- *   1. action: 'feedback'    → appends a row to the Feedback sheet
- *   2. action: 'addTree'     → appends a row to the Trees sheet and sorts by Scientific name
- *   3. action: 'uploadPhoto' → writes a base64-encoded image into the GitHub repo
+ * Handles these browser actions via a single Web App URL:
+ *   1. action: 'feedback'      → appends a row to the Feedback sheet
+ *   2. action: 'addTree'       → appends a row to the Trees sheet and sorts by Scientific name
+ *   3. action: 'uploadPhoto'   → writes a base64-encoded image into the GitHub repo
+ *   4. action: 'appendPhotos'  → adds photo paths to an existing tree's Photos cell
+ *   5. action: 'deletePhoto'   → removes a photo from GitHub and strips it from the Photos cell
+ *   6. action: 'editTree'      → updates editable fields of an existing tree row
+ *   7. action: 'deleteTree'    → deletes a tree's repo photos and removes its spreadsheet row
  *
  * SETUP
  * -----

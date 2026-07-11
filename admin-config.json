@@ -1,4 +1,7 @@
 {
   "version": 1,
-  "genusHues": {}
+  "genusHues": {
+    "Platanus": 14,
+    "Ulex": 233
+  }
 }

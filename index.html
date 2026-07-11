@@ -863,7 +863,8 @@
       flex-shrink: 0;
       border: 1px solid rgba(0,0,0,0.12);
     }
-    .genus-row-name { font-style: italic; flex: 1; font-size: 14px; }
+    .genus-row-name { font-size: 14px; }
+    .genus-row-examples { font-style: italic; flex: 1; font-size: 13px; color: #777; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .genus-row-colour { font-size: 11px; color: #bbb; }
     #swap-hint {
       margin: 10px 0 0;
@@ -1401,8 +1402,7 @@
   // The "tree map" suffix is added by code; PARK_NAME is just the park's name.
   const APP_TITLE = `${PARK_NAME} tree map`;
 
-  const ADMIN_CONFIG_URL =
-    `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/admin-config.json`;
+  const ADMIN_CONFIG_URL = './admin-config.json';
 
   // Mutable admin config — loaded at startup, updated on save.
   let adminConfig = { genusHues: {} };
@@ -2408,7 +2408,7 @@
   // ── ADMIN CONFIG ─────────────────────────────────────────────────────────────
   async function loadAdminConfig() {
     try {
-      const resp = await fetch(ADMIN_CONFIG_URL + '?t=' + Date.now());
+      const resp = await fetch(ADMIN_CONFIG_URL, { cache: 'no-cache' });
       if (resp.ok) {
         const data = await resp.json();
         if (data && data.genusHues && typeof data.genusHues === 'object') {
@@ -2458,6 +2458,15 @@
       if (!byGenus[g]) byGenus[g] = [];
       byGenus[g].push(name);
     }
+    const genusShortNames = {};
+    for (const tree of markers.keys()) {
+      const sci = (tree['Scientific name'] || '').trim();
+      const short = (tree['Short name'] || '').trim();
+      if (!sci || !short) continue;
+      const g = sci.split(' ')[0];
+      if (!genusShortNames[g]) genusShortNames[g] = new Set();
+      genusShortNames[g].add(short);
+    }
     const genera = Object.keys(byGenus).sort();
     const list = document.getElementById('genus-colour-list');
     list.innerHTML = '';
@@ -2470,6 +2479,7 @@
       const autoHue = Math.round(((gi / Math.max(genera.length, 1)) * 360 + 30) % 360);
       const hue = overrides[g] !== undefined ? overrides[g] : autoHue;
       const isOverride = overrides[g] !== undefined;
+      const shortNames = genusShortNames[g] ? [...genusShortNames[g]].slice(0, 2).join(', ') : '';
       const row = document.createElement('div');
       row.className = 'genus-row' + (_adminSwapGenus && _adminSwapGenus.genus === g ? ' swap-selected' : '');
       row.dataset.genus = g;
@@ -2477,6 +2487,7 @@
       row.innerHTML =
         `<span class="admin-colour-swatch" style="background:hsl(${hue},62%,48%)"></span>` +
         `<span class="genus-row-name">${g}</span>` +
+        `<span class="genus-row-examples">${shortNames}</span>` +
         `<span class="genus-row-colour">${isOverride ? '(swapped)' : '(auto)'}</span>`;
       row.addEventListener('click', () => handleGenusRowClick(g));
       list.appendChild(row);

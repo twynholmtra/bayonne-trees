@@ -46,6 +46,20 @@ If the tree already has 4 photos (the maximum), the slot is hidden
 even for enrolled contributors — remove one in the spreadsheet's
 `Photos` column to make room.
 
+## I added a tree using my phone and its position isn't correct
+
+When you add a tree with the **Use current location** button, it's placed using the phone's GPS positioning. Unfortunately, this isn't always accurate.
+
+Fortunately, this is a very easy problem to fix: 
+- On your computer (not your phone), view the map and click the incorrectly placed tree.
+- Copy its Ref (looks like `48344.21842`) to the clipboard. (Just click on the numbers to select it and `Ctrl / Cmd + C` 
+- Open the Google Sheet - there is a link to it in the map's About popup.
+- `Ctrl / Cmd + F` and paste in the Ref to find the right tree.
+- Go back to the map, and click the **Copy coords** button (it's next to the **Add a tree** button).
+- Click on the map in the correct location where the tree should be, to copy its coordinates to the clipboard. (You can turn on the Satellite view layer to help see the right location.)
+- Go back to the spreadsheet, and on the **Latitude** cell, `Ctrl / Cmd + V` Paste the coordinates - it will replace both Latitude and Longitude.
+- That's it! You've repositioned the tree.
+
 ## Submitted a tree but nothing happens
 
 Because of how Google Apps Script handles cross-origin requests, the browser

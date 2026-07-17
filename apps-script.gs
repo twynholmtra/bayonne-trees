@@ -2,14 +2,14 @@
  * Park Tree Map — combined Apps Script Web App
  *
  * Handles these browser actions via a single Web App URL:
- *   1. action: 'feedback'        → appends a row to the Feedback sheet
- *   2. action: 'addTree'         → appends a row to the Trees sheet and sorts by Scientific name
- *   3. action: 'uploadPhoto'     → writes a base64-encoded image into the GitHub repo
- *   4. action: 'appendPhotos'    → adds photo paths to an existing tree's Photos cell
- *   5. action: 'deletePhoto'     → removes a photo from GitHub and strips it from the Photos cell
+ *   1. action: 'feedback'      → appends a row to the Feedback sheet
+ *   2. action: 'addTree'       → appends a row to the Trees sheet and sorts by Scientific name
+ *   3. action: 'uploadPhoto'   → writes a base64-encoded image into the GitHub repo
+ *   4. action: 'appendPhotos'  → adds photo paths to an existing tree's Photos cell
+ *   5. action: 'deletePhoto'   → removes a photo from GitHub and strips it from the Photos cell
  *   6. action: 'editTree'        → updates editable fields of an existing tree row
  *   7. action: 'deleteTree'      → deletes a tree's repo photos and removes its spreadsheet row
- *   8. action: 'saveAdminConfig' → writes admin-config.json (colour overrides etc.) to the GitHub repo
+ *   8. action: 'repositionTree'  → updates the Latitude and Longitude of an existing tree
  *
  * SETUP
  * -----
@@ -69,10 +69,10 @@ function doPost(e) {
       case 'uploadPhoto':   return requireContributorToken(data) || handleUploadPhoto(data);
       case 'appendPhotos':  return requireContributorToken(data) || handleAppendPhotos(data);
       case 'deletePhoto':   return requireContributorToken(data) || handleDeletePhoto(data);
-      case 'editTree':        return requireContributorToken(data) || handleEditTree(data);
-      case 'deleteTree':      return requireContributorToken(data) || handleDeleteTree(data);
-      case 'saveAdminConfig': return requireContributorToken(data) || handleSaveAdminConfig(data);
-      default:                return jsonResponse({ status: 'error', message: 'Unknown action: ' + data.action });
+      case 'editTree':          return requireContributorToken(data) || handleEditTree(data);
+      case 'deleteTree':        return requireContributorToken(data) || handleDeleteTree(data);
+      case 'repositionTree':    return requireContributorToken(data) || handleRepositionTree(data);
+      default:              return jsonResponse({ status: 'error', message: 'Unknown action: ' + data.action });
     }
   } catch (err) {
     Logger.log('doPost error: ' + err);
@@ -340,6 +340,32 @@ function handleEditTree(data) {
   set('Year died',         data.year_died);
   set('Form',              data.form_field);
   set('Condition',         data.condition);
+  return jsonResponse({ status: 'ok' });
+}
+
+// ── Reposition a tree (update Latitude / Longitude only) ─────────────────────
+function handleRepositionTree(data) {
+  if (!data.ref || data.lat === undefined || data.lng === undefined) {
+    return jsonResponse({ status: 'error', message: 'Missing ref, lat, or lng' });
+  }
+  const lat = parseFloat(data.lat);
+  const lng = parseFloat(data.lng);
+  if (isNaN(lat) || isNaN(lng)) {
+    return jsonResponse({ status: 'error', message: 'Invalid lat/lng' });
+  }
+  const ss    = SpreadsheetApp.openById(sheetId());
+  const sheet = ss.getSheetByName(TREES_SHEET);
+  if (!sheet) return jsonResponse({ status: 'error', message: 'Sheet "' + TREES_SHEET + '" not found' });
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const row = findTreeRow(sheet, data.ref);
+  if (row && row.error) return jsonResponse({ status: 'error', message: row.error });
+  if (!row) return jsonResponse({ status: 'error', message: 'Tree not found: ' + data.ref });
+  const set = (colName, value) => {
+    const i = headers.indexOf(colName);
+    if (i >= 0) sheet.getRange(row.rowNum, i + 1).setValue(value);
+  };
+  set('Latitude',  lat);
+  set('Longitude', lng);
   return jsonResponse({ status: 'ok' });
 }
 

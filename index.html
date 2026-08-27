@@ -476,8 +476,8 @@
       display: none;
     }
     @media (max-width: 767px) { #tree-count-handle { display: block; } }
-    #tree-count-modal h3 { margin: 0 0 4px; font-size: 15px; color: #1a1a1a; }
-    #tree-count-modal .modal-subtitle { margin: 0 0 14px; font-size: 12px; line-height: 1.2; color: #777; }
+    #tree-count-modal h3 { margin: 0 0 8px; font-size: 15px; color: #1a1a1a; }
+    #tree-count-modal .modal-subtitle { margin: 0 0 14px; font-size: 12px; line-height: 1.4; color: #777; }
     .exclude-opt {
       display: flex;
       align-items: center;
@@ -829,7 +829,9 @@
       object-fit: contain;
       display: block;
       cursor: zoom-in;
+      touch-action: pan-y;
     }
+    #lightbox-img.zoomed { touch-action: none; }
     #lightbox-grad-top, #lightbox-grad-bottom {
       position: fixed;
       left: 0; right: 0;
@@ -2885,6 +2887,10 @@
         img.setPointerCapture(e.pointerId);
         lb.style.cursor     = 'grabbing';
         lb.style.userSelect = 'none';
+      } else if (e.pointerType === 'touch') {
+        // Capture so a finger drifting off the (letterboxed) image still
+        // delivers pointermove/pointerup here, for reliable swipe detection.
+        img.setPointerCapture(e.pointerId);
       }
     });
 
@@ -2899,10 +2905,18 @@
       }
     });
 
-    img.addEventListener('pointerup', () => {
+    img.addEventListener('pointerup', e => {
       lbDragging = false;
       lbDragStart = lbScrollStart = null;
       lb.style.cursor = lb.style.userSelect = '';
+      if (e.pointerType === 'touch' && lbPointerOrigin && !img.classList.contains('zoomed') && lbPhotos.length > 1) {
+        const dx = e.clientX - lbPointerOrigin.x;
+        const dy = e.clientY - lbPointerOrigin.y;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+          const dir = dx < 0 ? 1 : -1;
+          if (lbIndex + dir >= 0 && lbIndex + dir < lbPhotos.length) stepLightbox(dir);
+        }
+      }
     });
 
     img.addEventListener('pointercancel', () => {

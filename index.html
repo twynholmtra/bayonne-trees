@@ -1362,7 +1362,7 @@
           <label>Year planted
             <input name="year_planted" type="text" inputmode="numeric" placeholder="e.g. 2021">
           </label>
-          <label>Est. year planted
+          <label>Estimated year planted
             <input name="est_year_planted" type="text" inputmode="numeric" placeholder="e.g. 2015">
           </label>
         </div>
@@ -1907,7 +1907,7 @@
     if (sciVal) html += row('Common name', comVal);
     html += row('Other names',      tree['Other names']);
     html += row('Year planted',     tree['Year planted'],     tree['Year planted']     ? ageSuffix : '');
-    html += row('Est. year planted',tree['Est. year planted'],tree['Est. year planted'] ? ageSuffix : '');
+    html += row('Estimated year planted',tree['Est. year planted'],tree['Est. year planted'] ? ageSuffix : '');
     html += row('Year died',        tree['Year died']);
     html += row('Form',             tree['Form']);
     html += row('Condition',        tree['Condition']);

@@ -14,7 +14,7 @@ You will need:
 
 1. In your forked repo, click **Settings → Pages**.
 2. Under **Custom domain**, type your domain (e.g. `trees.myparkfriends.org`
-   for a subdomain, or `myparkfriends.org` for an apex domain).
+   for a subdomain, or `myparktrees.org` for an apex domain).
 3. Click **Save**.
 
 GitHub will create a `CNAME` file in your repository containing that
@@ -23,14 +23,14 @@ hostname. The map will start expecting to be served from that URL.
 ## 2. Configure DNS at your domain registrar
 
 In your registrar's DNS panel, **for a subdomain** like
-`trees.myparkfriends.org`:
+`trees.myparkfriends.org`, add a `CNAME` record with these values:
 
 | Type    | Host (or Name)      | Value                                  |
 |---------|---------------------|----------------------------------------|
 | `CNAME` | `trees`             | `your-username.github.io.`             |
 
-**For an apex domain** like `myparkfriends.org` you need four `A` records
-pointing at GitHub's IP addresses. Check the current list at
+**For an apex domain** like `myparktrees.org`, add four `A` records instead.
+Check the current list at
 [GitHub's apex domain documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain).
 
 It usually takes 5–60 minutes for DNS to propagate. After that, GitHub Pages

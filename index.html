@@ -1253,11 +1253,6 @@
       font-size: 12px; color: #888; text-align: center;
     }
     #info-attribution a { color: #2a7ae2; }
-    #info-history-row {
-      margin-top: 12px;
-      font-size: 12px; color: #888; text-align: center;
-    }
-    #info-history-row a { color: #2a7ae2; }
 
     /* ── MAP LOADING INDICATOR (shown while the first tree-data fetch is in flight) ── */
     #map-loading {
@@ -1348,12 +1343,11 @@
     <p id="info-description"></p>
     <div class="info-row" id="info-website-row">Website: <a id="info-website" href="#" target="_blank" rel="noopener"></a></div>
     <div class="info-row" id="info-contact-row">Contact: <a id="info-contact" href="#"></a></div>
-    <div class="info-row" id="info-sheet-row">Tree spreadsheet: <a id="info-sheet" href="#" target="_blank" rel="noopener">open in Google Sheets</a></div>
+    <div class="info-row" id="info-sheet-row">Tree database: <a id="info-sheet" href="#" target="_blank" rel="noopener">Open in Google Sheets</a> (<a href="#" onclick="openHistoryPanel(); closeInfoModal(); return false;">history</a>)</div>
     <div class="info-row" id="info-enrol-row">Want to add trees from this device? <a href="#" onclick="enrolDeviceManually(); return false;">Enrol this device</a></div>
     <div id="info-attribution">
       Built with <a href="https://parktreemap.org/" target="_blank" rel="noopener">park-treemap</a> — a free, self-hosted tree-map template for any park's "Friends of" group.
     </div>
-    <div id="info-history-row"><a href="#" onclick="openHistoryPanel(); closeInfoModal(); return false;">Edit history</a></div>
   </div>
 
   <div id="welcome-overlay">
@@ -1891,7 +1885,9 @@
       if (cRow) cRow.style.display = 'none';
     }
 
-    // Tree-spreadsheet row — contributor-only convenience link.
+    // Tree-database row — contributor-only convenience links (spreadsheet +
+    // History). History is only reachable from here, so it's effectively
+    // contributor-only too.
     const sEl  = document.getElementById('info-sheet');
     const sRow = document.getElementById('info-sheet-row');
     if (canContribute() && SHEET_ID) {
